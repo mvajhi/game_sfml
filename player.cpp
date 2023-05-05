@@ -17,12 +17,10 @@ void Player::move(Vector2f dir)
 {
     if (dir.x != 0)
         velocity.x = dir.x * acceleration;
-    if (velocity.y < 0 && dir.x != 0)
-        velocity.x = DEFAULT_VELOCITY_MAX;
         
     if (dir.y != 0)
         velocity.y = dir.y * acceleration;
-    if (abs(velocity.x) > velocity_max)
+    if (abs(velocity.x) > velocity_max || (abs(velocity.y) > 0 && dir.x != 0))
         velocity.x = velocity_max * (signbit(velocity.x) ? -1 : 1);
     if (velocity.y > velocity_max)
         velocity.y = velocity_max * (signbit(velocity.y) ? -1 : 1);
@@ -79,11 +77,6 @@ void Player::update()
 {
     update_animation();
 
-    if (have_move)
-        have_move = false;
-    else
-        anime_state = IDL;
-
     update_move();
 }
 
@@ -108,6 +101,11 @@ void Player::update_animation()
     sprite.setTextureRect(move_frame);
 
     last_anime_state = anime_state;
+
+    if (have_move)
+        have_move = false;
+    else
+        anime_state = IDL;
 }
 
 void Player::update_left_animation()
@@ -171,6 +169,11 @@ void Player::save_pre_position()
 Vector2f Player::get_pre_position()
 {
     return pre_position;
+}
+
+Vector2f Player::get_velocity()
+{
+    return velocity;
 }
 
 FloatRect Player::get_global_bound()

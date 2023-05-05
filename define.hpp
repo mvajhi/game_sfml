@@ -49,6 +49,7 @@ const int RIGHT = 1;
 const int LEFT = 2;
 const int DOWN = 3;
 const int IDL = 4;
+const int NO_COLLISION = -1;
 
 const float PLAYER_SPEED = 10;
 

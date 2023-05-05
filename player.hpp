@@ -41,6 +41,7 @@ public:
     void set_spawn(float x, float y);
     void save_pre_position();
     Vector2f get_pre_position();
+    Vector2f get_velocity();
 
     // collision
     FloatRect get_global_bound();
