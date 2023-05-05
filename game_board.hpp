@@ -8,11 +8,19 @@ private:
         Texture t_floor;
         Sprite floor;
         vector<Sprite> floors;
+        Texture t_diamond;
+        Sprite diamond;
+        vector<Sprite> diamonds;
+        Texture t_star;
+        Sprite star;
+        vector<Sprite> stars;
 
 
 public:
         Game_board(/* args */);
         void add_new_floor(Vector2f position);
+        void add_new_diamond(Vector2f position);
+        void add_new_star(Vector2f position);
         void reset_map();
         vector<FloatRect> get_floors_bound();
         vector<Sprite> get_board();

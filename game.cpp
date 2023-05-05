@@ -277,6 +277,10 @@ void Game::proccess_new_block(Vector2f position, char value)
     // TODO
     else if (value == PLAYER_MAP_SYMBOLE)
         the_player.set_spawn(position.x, position.y);
+    else if (value == DIAMOND_SYMBOL)
+        the_game_board.add_new_diamond(position);
+    else if(value == STAR_SYMBOL)
+        the_game_board.add_new_star(position);
     // the_player.set_position(position.x, position.y);
     // else if (value == PLAYER_MAP_SYMBOLE)
     // TODO

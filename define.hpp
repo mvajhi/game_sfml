@@ -36,13 +36,17 @@ const string IMG = ASSETS + "/img";
 const string MAPS = ASSETS + "/levels";
 const string MAP_L1 = MAPS + "/level1.map";
 const string PLAYER_IMG = IMG + "/player.png";
-const string FLOOR_IMG = IMG + "/floor.png"; 
+const string FLOOR_IMG = IMG + "/floor.png";
+const string DIAMOND_IMG = IMG + "/diamond.png";
+const string STAR_IMG = IMG + "/star.png";
 const string BACKGROUND_IMG = IMG + "/back.jpg"; 
 const string ADDR_FONT = ASSETS + "/font.ttf";
 const string ADDR_FONT_2 = ASSETS + "/arial.ttf";
 
 const string FLOOR_MAP_SYMBOLE = "#";
 const string PLAYER_MAP_SYMBOLE = "P";
+const string DIAMOND_SYMBOL = "^";
+const string STAR_SYMBOL = "*";
 
 const int UP = 0;
 const int RIGHT = 1;
