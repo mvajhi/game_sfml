@@ -287,7 +287,10 @@ void Game::proccess_new_block(Vector2f position, char value)
         the_game_board.add_new_floor(position);
     // TODO
     else if (value == PLAYER_MAP_SYMBOLE)
+    {
         the_player.set_spawn(position.x, position.y);
+        the_game_board.set_portal(position);
+    }
     // the_player.set_position(position.x, position.y);
     // else if (value == PLAYER_MAP_SYMBOLE)
     // TODO
