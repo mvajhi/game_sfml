@@ -20,11 +20,20 @@ private:
 
 public:
         Game_board(/* args */);
+
+        //initialize
         void add_new_floor(Vector2f position);
         void add_new_diamond(Vector2f position);
         void add_new_star(Vector2f position);
         void set_portal(Vector2f position);
         void reset_map();
+
+        //outputs
         vector<FloatRect> get_floors_bound();
+        vector<FloatRect> get_stars_bound();
+        vector<FloatRect> get_diamonds_bound();
         vector<Sprite> get_board();
+
+        void remove_dimend(int pos);
+        void remove_star(int pos);
 };

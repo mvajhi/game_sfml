@@ -61,15 +61,15 @@ const float PLAYER_SPEED = 10;
 const float BLOCK_SIZE = 100;
 //!!WARNING image size should set
 const int IMG_FLOOR_SIZE = 100;
-const int IMG_COIN_SIZE = 100;
-const int IMG_DIMEND_SIZE = 100;
+const int IMG_DIMEND_SIZE = 95;
+const int IMG_STAR_SIZE = 110;
 const int IMG_PORTAL_SIZE = 134;
 const int IMG_PLAYER_SIZE = 100;
 const int IMG_PLAYER_SIZE_H = 100;
 const int IMG_PLAYER_SIZE_W = 95;
 
 const float FLOOR_SCALE = BLOCK_SIZE * 1.0 / IMG_FLOOR_SIZE;
-const float COIN_SCALE = BLOCK_SIZE * 1.0 / IMG_COIN_SIZE;
+const float STAR_SCALE = BLOCK_SIZE * 1.0 / IMG_STAR_SIZE;
 const float DIMEND_SCALE = BLOCK_SIZE * 1.0 / IMG_DIMEND_SIZE;
 const float PORTAL_SCALE = BLOCK_SIZE * 1.0 / IMG_PORTAL_SIZE;
 const float PLAYER_SCALE_X = BLOCK_SIZE * 1.0 / IMG_PLAYER_SIZE_H;
@@ -85,6 +85,8 @@ const float DEFAULT_GRAVITY = 1         * BLOCK_SIZE / 100;
 
 const int DEFAULT_HELTH = 3;
 const int DEFAULT_SCORE = 0;
+const int DIMEND_SCORE = 2;
+const int STAR_SCORE = 1;
 
 const int FONT_SIZE = 35;
 const Color FONT_COLOR(Color::White);

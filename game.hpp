@@ -17,7 +17,10 @@ private:
     Text health;
     Font font;
 
+    //collision
     void update_collisions();
+    void collision_player_and_floors();
+    void collision_player_and_scores();
     void check_2_shape_collision(Vector2f person_pos, Vector2f object_pos,bool report[] , Vector2f move_size);
     void check_vertical_collision(FloatRect floor, float dy);
     void check_horizontal_collision(FloatRect floor, float dx);
