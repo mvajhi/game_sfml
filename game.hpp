@@ -13,6 +13,9 @@ private:
     Player the_player;
     Game_board the_game_board;
     Menu_manager menu_manager;
+    Text score;
+    Text health;
+    Font font;
 
     void update_collisions();
     void check_2_shape_collision(Vector2f person_pos, Vector2f object_pos,bool report[] , Vector2f move_size);
@@ -24,6 +27,16 @@ private:
     void proccess_new_block(Vector2f position, char value);
     void proccess_text_map(vector<string> text_map);
     Vector2f convert_text_to_pixle_pos(Vector2f position);
+
+    //display
+    vector<Drawable *> sprites_to_drawables_ptr(vector<Sprite> &sprites);
+    
+    //score
+    string show_score();
+    string show_health();
+    void set_score_and_health();
+
+    void initilaize_font();
 
 public:
     Game(/* args */);

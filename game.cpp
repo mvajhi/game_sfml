@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include <fstream>
+#include <bits/stdc++.h>
 
 void Game::check_2_shape_collision(Vector2f person_pos, Vector2f object_pos, bool report[], Vector2f move_size)
 {
@@ -186,11 +187,13 @@ void Game::update_collisions()
     }
 }
 
-Game::Game() : the_window(900, 600, "game", this),
+Game::Game() : the_window(WINDOW_W, WINDOW_H, "game", this),
                the_player(PLAYER_IMG),
                menu_manager(this, the_window.get_window())
 {
     menu_manager.show_menu(START_MENU);
+
+    initilaize_font();
 }
 
 RenderWindow &Game::get_window()
@@ -202,14 +205,18 @@ void Game::update()
 {
     the_window.get_events();
     the_player.update();
-    update_collisions();
+    update_collision();
+    set_score_and_health();
 }
 
 void Game::render()
 {
     vector<Sprite> sprites = the_game_board.get_board();
     sprites.push_back(the_player.get_sprite());
-    the_window.render(sprites, the_player.get_position());
+    vector<Drawable *> output = sprites_to_drawables_ptr(sprites);
+    output.push_back(&score);
+    output.push_back(&health);
+    the_window.render(output, the_player.get_position());
 }
 
 void Game::handel_event(Event event)
@@ -285,4 +292,42 @@ void Game::proccess_text_map(vector<string> text_map)
 Vector2f Game::convert_text_to_pixle_pos(Vector2f position)
 {
     return Vector2f((position.x + 10.5) * BLOCK_SIZE, (position.y + 0.5) * BLOCK_SIZE);
+}
+vector<Drawable *> Game::sprites_to_drawables_ptr(vector<Sprite> &sprites)
+{
+    vector<Drawable *> output;
+    for (size_t i = 0; i < sprites.size(); i++)
+        output.push_back(&sprites[i]);
+    return output;
+}
+string Game::show_score()
+{
+    int score_val = the_player.get_score();
+    return "score : " + to_string(score_val);
+}
+string Game::show_health()
+{
+    int health_val = the_player.get_health();
+    return "health : " + to_string(health_val);
+}
+void Game::set_score_and_health()
+{
+    score.setString(show_score());
+    score.setOrigin(score.getGlobalBounds().width/2,score.getGlobalBounds().height/2);
+    score.setPosition(the_player.get_position() + Vector2f(0, - WINDOW_H / 2 + BLOCK_SIZE / 2));
+    health.setString(show_health());
+    health.setOrigin(score.getGlobalBounds().width/2,score.getGlobalBounds().height/2);
+    health.setPosition(the_player.get_position() + Vector2f(WINDOW_W / 2 - BLOCK_SIZE * 3 / 2, - WINDOW_H / 2 + BLOCK_SIZE / 2));
+
+}
+
+void Game::initilaize_font()
+{
+    font.loadFromFile(ADDR_FONT_2);
+    score.setFont(font);
+    score.setCharacterSize(FONT_SIZE);
+    score.setFillColor(FONT_COLOR);
+    health.setFont(font);
+    health.setCharacterSize(FONT_SIZE);
+    health.setFillColor(FONT_COLOR);
 }

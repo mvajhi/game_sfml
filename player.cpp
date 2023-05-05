@@ -1,6 +1,7 @@
 #include "player.hpp"
 #include <cmath>
 
+
 void Player::update_move()
 {
     velocity.x = velocity.x * drag;
@@ -44,6 +45,9 @@ Player::Player(string texture_file_addr)
     acceleration = DEFAULT_ACCELERATION;
     drag = DEFAULT_DRAG;
     gravity = DEFAULT_GRAVITY;
+    score=DEFAULT_SCORE;
+    health=DEFAULT_HELTH;
+    
 }
 
 void Player::move_handel(int direct)
@@ -201,3 +205,8 @@ void Player::move(float x, float y)
 {
     sprite.move(x, y);
 }
+int Player::get_score()
+{return score;}
+int Player::get_health()
+{return health;}
+
