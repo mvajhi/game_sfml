@@ -21,6 +21,7 @@ private:
     void check_2_shape_collision(Vector2f person_pos, Vector2f object_pos,bool report[] , Vector2f move_size);
     void check_vertical_collision(FloatRect floor, float dy);
     void check_horizontal_collision(FloatRect floor, float dx);
+    bool can_jump();
 
     // map file
     vector<string> read_map_file(string address_file);

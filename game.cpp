@@ -43,8 +43,6 @@ void Game::check_vertical_collision(FloatRect floor, float dy)
     if (report[DOWN])
     {
         the_player.reset_velocity_y();
-        // the_player.set_position(the_player.get_global_bound().left,
-        //                         floor.top - the_player.get_global_bound().height);
         the_player.set_position(the_player.get_position().x,
                                 the_player.get_position().y - dy);
     }
@@ -55,8 +53,6 @@ void Game::check_vertical_collision(FloatRect floor, float dy)
         the_player.reset_velocity_y();
         the_player.set_position(the_player.get_position().x,
                                 floor.top + the_player.get_global_bound().height + 10);
-        // the_player.set_position(the_player.get_position().x,
-        //                         the_player.get_position().y - dy);
     }
 }
 
@@ -79,6 +75,20 @@ void Game::check_horizontal_collision(FloatRect floor, float dx)
         the_player.set_position(the_player.get_position().x - dx,
                                 the_player.get_position().y);
     }
+}
+
+bool Game::can_jump()
+{
+    vector<FloatRect> floors = the_game_board.get_floors_bound();
+    for (auto floor : floors)
+    {
+        bool report[4] = {false, false, false, false};
+
+        check_2_shape_collision(the_player.get_position(), Vector2f(floor.left, floor.top), report, Vector2f(0, 20));
+        if (report[DOWN])
+            return true;
+    }
+    return false;
 }
 
 void Game::update_collisions()
@@ -236,9 +246,10 @@ void Game::handel_keyboard_event(Event event)
     else if (event.key.code == Keyboard::A)
         the_player.move_handel(LEFT);
     else if (event.key.code == Keyboard::W)
-        the_player.move_handel(UP);
-    else if (event.key.code == Keyboard::S)
-        the_player.move_handel(DOWN);
+        if (can_jump())
+            the_player.move_handel(UP);
+    // else if (event.key.code == Keyboard::S)
+    //     the_player.move_handel(DOWN);
 }
 
 void Game::pre_update()
@@ -274,13 +285,15 @@ void Game::proccess_new_block(Vector2f position, char value)
 
     if (value == FLOOR_MAP_SYMBOLE)
         the_game_board.add_new_floor(position);
-    // TODO
-    else if (value == PLAYER_MAP_SYMBOLE)
-        the_player.set_spawn(position.x, position.y);
     else if (value == DIAMOND_SYMBOL)
         the_game_board.add_new_diamond(position);
-    else if(value == STAR_SYMBOL)
+    else if (value == STAR_SYMBOL)
         the_game_board.add_new_star(position);
+    else if (value == PLAYER_MAP_SYMBOLE)
+    {
+        the_player.set_spawn(position.x, position.y);
+        the_game_board.set_portal(position);
+    }
     // the_player.set_position(position.x, position.y);
     // else if (value == PLAYER_MAP_SYMBOLE)
     // TODO
@@ -317,12 +330,11 @@ string Game::show_health()
 void Game::set_score_and_health()
 {
     score.setString(show_score());
-    score.setOrigin(score.getGlobalBounds().width/2,score.getGlobalBounds().height/2);
-    score.setPosition(the_player.get_position() + Vector2f(0, - WINDOW_H / 2 + BLOCK_SIZE / 2));
+    score.setOrigin(score.getGlobalBounds().width / 2, score.getGlobalBounds().height / 2);
+    score.setPosition(the_player.get_position() + Vector2f(0, -WINDOW_H / 2 + BLOCK_SIZE / 2));
     health.setString(show_health());
-    health.setOrigin(score.getGlobalBounds().width/2,score.getGlobalBounds().height/2);
-    health.setPosition(the_player.get_position() + Vector2f(WINDOW_W / 2 - BLOCK_SIZE * 3 / 2, - WINDOW_H / 2 + BLOCK_SIZE / 2));
-
+    health.setOrigin(score.getGlobalBounds().width / 2, score.getGlobalBounds().height / 2);
+    health.setPosition(the_player.get_position() + Vector2f(WINDOW_W / 2 - BLOCK_SIZE * 3 / 2, -WINDOW_H / 2 + BLOCK_SIZE / 2));
 }
 
 void Game::initilaize_font()
