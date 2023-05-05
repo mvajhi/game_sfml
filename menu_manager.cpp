@@ -12,15 +12,17 @@ Menu_manager::Menu_manager(Game *the_game, RenderWindow &the_window)
 
     start_menu = new Menu(window, font, MENU_POS, backgroundTexture);
     level_menu = new Menu(window, font, MENU_POS, backgroundTexture);
+    pause_menu = new Menu(window, font, MENU_POS, backgroundTexture);
 
     initialize_level_menu();
     initialize_start_menu();
+    initialize_pause_menu();
 }
 
 Menu_manager::~Menu_manager()
 {
-    delete(start_menu);
-    delete(level_menu);
+    delete (start_menu);
+    delete (level_menu);
 }
 
 void Menu_manager::show_menu(int page = DEFAULT_PAGE)
@@ -48,7 +50,10 @@ void Menu_manager::show_menu(int page = DEFAULT_PAGE)
         }
 
         window.clear();
+
         page->draw();
+
+        window.setView(View(Vector2f(WINDOW_W / 2, WINDOW_H / 2), Vector2f(900, 600)));
         window.display();
     }
 }
@@ -62,6 +67,9 @@ Menu *Menu_manager::find_avail_page()
         break;
     case LEVEL_MENU:
         return level_menu;
+        break;
+    case PAUSE_MENU:
+        return pause_menu;
         break;
 
     default:
@@ -77,26 +85,33 @@ void Menu_manager::initialize_level_menu()
 
     int &avail_menu = available_page;
     level_menu->add_button("level 1", [&the_game, &avail_menu]()
-                          { cout << "level 1" << endl;
-                           avail_menu = SHOW_GAME;
-                           });
+                           { cout << "level 1" << endl;
+                           avail_menu = SHOW_GAME; });
 
     level_menu->add_button("level 2", []()
-                          { cout << "level 2" << endl; });
+                           { cout << "level 2" << endl; });
 
-    //!!
     level_menu->add_button("return", [&avail_menu]()
-                          { avail_menu = START_MENU; });
+                           { avail_menu = START_MENU; });
 }
 
 void Menu_manager::initialize_start_menu()
 {
-    //!!
     int &avail_menu = available_page;
     start_menu->add_button("Start", [&avail_menu]()
-                          { avail_menu = LEVEL_MENU; });
+                           { avail_menu = LEVEL_MENU; });
 
     auto &the_window = window;
     start_menu->add_button("Exit", [&the_window]()
-                          { the_window.close(); });
+                           { the_window.close(); });
+}
+
+void Menu_manager::initialize_pause_menu()
+{
+    int &avail_menu = available_page;
+    pause_menu->add_button("Continue", [&avail_menu]()
+                           { avail_menu = SHOW_GAME; });
+    // TODO reset level
+    pause_menu->add_button("return", [&avail_menu]()
+                           { avail_menu = LEVEL_MENU; });
 }

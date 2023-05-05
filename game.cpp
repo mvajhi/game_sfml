@@ -241,6 +241,8 @@ void Game::handel_event(Event event)
         the_window.close();
     else if (event.type == Event::KeyPressed)
         handel_keyboard_event(event);
+    else if (event.type == Event::MouseButtonPressed)
+        handel_mouse_event(event);
 }
 
 void Game::handel_keyboard_event(Event event)
@@ -256,6 +258,19 @@ void Game::handel_keyboard_event(Event event)
             the_player.move_handel(UP);
     // else if (event.key.code == Keyboard::S)
     //     the_player.move_handel(DOWN);
+}
+
+void Game::handel_mouse_event(Event event)
+{
+    Vector2f mouse_pos = (Vector2f)Mouse::getPosition(the_window.get_window());
+    mouse_pos += the_player.get_position() - Vector2f(WINDOW_W / 2, WINDOW_H / 2);
+
+    if (pause.getGlobalBounds().contains(mouse_pos))
+    {
+        cout << "pause\n";
+
+        menu_manager.show_menu(PAUSE_MENU);
+    }
 }
 
 void Game::pre_update()

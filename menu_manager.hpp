@@ -14,6 +14,7 @@ private:
     
     Menu *start_menu;
     Menu *level_menu;
+    Menu *pause_menu;
 
     Font font;
     Texture backgroundTexture;
@@ -24,6 +25,7 @@ private:
     //initialize
     void initialize_level_menu();
     void initialize_start_menu();
+    void initialize_pause_menu();
 
 public:
     Menu_manager(Game *the_game, RenderWindow &the_window);

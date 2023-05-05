@@ -39,7 +39,12 @@ private:
     string show_health();
     void set_score_and_health();
 
+    //initilaize
     void initilaize_font();
+
+    //events_handel
+    void handel_keyboard_event(Event event);
+    void handel_mouse_event(Event event);
 
 public:
     Game(/* args */);
@@ -48,7 +53,6 @@ public:
     void update();
     void render();
     void handel_event(Event event);
-    void handel_keyboard_event(Event event);
     void pre_update();
 
     // map

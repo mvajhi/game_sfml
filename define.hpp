@@ -24,6 +24,7 @@ const Vector2f MENU_POS(300.f, 200.f);
 const int START_MENU = 0;
 const int LEVEL_MENU = 1;
 const int SHOW_GAME = 2;
+const int PAUSE_MENU = 3;
 const int DEFAULT_PAGE = START_MENU;
 
 const int EMPTY = -1;
