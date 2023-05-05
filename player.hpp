@@ -31,6 +31,8 @@ private:
 
     void update_move();
     void move(Vector2f dir);
+
+    //score and health
     int score;
     int health;
 
@@ -41,9 +43,6 @@ public:
     Sprite get_sprite();
     Vector2f get_position();
     void set_spawn(float x, float y);
-    void save_pre_position();
-    Vector2f get_pre_position();
-    Vector2f get_velocity();
 
     // collision
     FloatRect get_global_bound();
@@ -51,6 +50,14 @@ public:
     void reset_velocity_x();
     void set_position(float x, float y);
     void move(float x, float y);
+    void save_pre_position();
+    Vector2f get_pre_position();
+    Vector2f get_velocity();
+
+    //score and health
     int get_score();
     int get_health();
+    void add_score(int value);
+    void decrese_health(int value);
+    bool is_dead();
 };

@@ -27,6 +27,21 @@ void Player::move(Vector2f dir)
         velocity.y = velocity_max * (signbit(velocity.y) ? -1 : 1);
 }
 
+void Player::add_score(int value)
+{
+    score += value;
+}
+
+void Player::decrese_health(int value)
+{
+    health -= value;
+}
+
+bool Player::is_dead()
+{
+    return health <= 0;
+}
+
 Player::Player(string texture_file_addr)
 {
     texture.loadFromFile(texture_file_addr);

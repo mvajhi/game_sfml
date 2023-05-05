@@ -93,6 +93,12 @@ bool Game::can_jump()
 
 void Game::update_collisions()
 {
+    collision_player_and_floors();
+    collision_player_and_scores();
+}
+
+void Game::collision_player_and_floors()
+{
     // if (the_player.get_global_bound().top + the_player.get_global_bound().height > the_window.get_window().getSize().y)
     // {
     //     the_player.reset_velocity_y();
@@ -195,6 +201,27 @@ void Game::update_collisions()
         check_horizontal_collision(floor, dx);
         check_vertical_collision(floor, dy);
     }
+}
+
+void Game::collision_player_and_scores()
+{
+    vector<FloatRect> dimends = the_game_board.get_diamonds_bound();
+    vector<FloatRect> stars = the_game_board.get_stars_bound();
+    FloatRect player_bound = the_player.get_global_bound();
+    for (size_t i = 0; i < dimends.size(); i++)
+        if (dimends[i].intersects(player_bound))
+        {
+            the_player.add_score(DIMEND_SCORE);
+            the_game_board.remove_dimend(i);
+            return;
+        }
+    for (size_t i = 0; i < stars.size(); i++)
+        if (stars[i].intersects(player_bound))
+        {
+            the_player.add_score(STAR_SCORE);
+            the_game_board.remove_star(i);
+            return;
+        }
 }
 
 Game::Game() : the_window(WINDOW_W, WINDOW_H, "game", this),
@@ -306,13 +333,19 @@ void Game::proccess_new_block(Vector2f position, char value)
 
     if (value == FLOOR_MAP_SYMBOLE)
         the_game_board.add_new_floor(position);
-    // TODO
+    else if (value == DIAMOND_SYMBOL)
+        the_game_board.add_new_diamond(position);
+    else if (value == STAR_SYMBOL)
+        the_game_board.add_new_star(position);
     else if (value == PLAYER_MAP_SYMBOLE)
     {
         the_player.set_spawn(position.x, position.y);
         the_game_board.set_portal(position);
     }
-    
+    else if (value == BOY_TURTLE_SYMBOL)
+    {
+        the_game_board.add_new_boy_turtle(position);
+    }
     // the_player.set_position(position.x, position.y);
     // else if (value == PLAYER_MAP_SYMBOLE)
     // TODO

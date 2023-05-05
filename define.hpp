@@ -37,15 +37,21 @@ const string IMG = ASSETS + "/img";
 const string MAPS = ASSETS + "/levels";
 const string MAP_L1 = MAPS + "/level1.map";
 const string PLAYER_IMG = IMG + "/player.png";
-const string FLOOR_IMG = IMG + "/floor.png"; 
+const string FLOOR_IMG = IMG + "/floor.png";
+const string DIAMOND_IMG = IMG + "/diamond.png";
+const string STAR_IMG = IMG + "/star.png";
 const string PORTAL_IMG = IMG + "/portal.png"; 
 const string PAUSE_IMG = IMG + "/pause.png";
+const string BOY_TURTLE_IMG = IMG + "/boy_turtle.png";
 const string BACKGROUND_IMG = IMG + "/back.jpg"; 
 const string ADDR_FONT = ASSETS + "/font.ttf";
 const string ADDR_FONT_2 = ASSETS + "/arial.ttf";
 
 const string FLOOR_MAP_SYMBOLE = "#";
 const string PLAYER_MAP_SYMBOLE = "P";
+const string DIAMOND_SYMBOL = "^";
+const string STAR_SYMBOL = "*";
+const string BOY_TURTLE_SYMBOL = "@";
 
 const int UP = 0;
 const int RIGHT = 1;
@@ -60,20 +66,22 @@ const float BLOCK_SIZE = 100;
 //!!WARNING image size should set
 const int IMG_FLOOR_SIZE = 100;
 const int IMG_PAUSE_SIZE = 390;
-const int IMG_COIN_SIZE = 100;
-const int IMG_DIMEND_SIZE = 100;
+const int IMG_DIMEND_SIZE = 95;
+const int IMG_STAR_SIZE = 110;
 const int IMG_PORTAL_SIZE = 134;
 const int IMG_PLAYER_SIZE = 100;
 const int IMG_PLAYER_SIZE_H = 100;
 const int IMG_PLAYER_SIZE_W = 95;
+const int IMG_BOY_TURTLE = 156;
 
 const float PAUSE_SCALE = BLOCK_SIZE * 1.0 / IMG_PAUSE_SIZE;
 const float FLOOR_SCALE = BLOCK_SIZE * 1.0 / IMG_FLOOR_SIZE;
-const float COIN_SCALE = BLOCK_SIZE * 1.0 / IMG_COIN_SIZE;
+const float STAR_SCALE = BLOCK_SIZE * 1.0 / IMG_STAR_SIZE;
 const float DIMEND_SCALE = BLOCK_SIZE * 1.0 / IMG_DIMEND_SIZE;
 const float PORTAL_SCALE = BLOCK_SIZE * 1.0 / IMG_PORTAL_SIZE;
 const float PLAYER_SCALE_X = BLOCK_SIZE * 1.0 / IMG_PLAYER_SIZE_H;
 const float PLAYER_SCALE_Y = BLOCK_SIZE * 1.0 / IMG_PLAYER_SIZE_W;
+const float BOY_TURTLE_SCALE = BLOCK_SIZE * 1.0 / IMG_BOY_TURTLE;
 
 const float ANIME_PLAYER_SPEED = 0.02;
 
@@ -85,6 +93,8 @@ const float DEFAULT_GRAVITY = 1         * BLOCK_SIZE / 100;
 
 const int DEFAULT_HELTH = 3;
 const int DEFAULT_SCORE = 0;
+const int DIMEND_SCORE = 2;
+const int STAR_SCORE = 1;
 
 const int FONT_SIZE = 35;
 const Color FONT_COLOR(Color::White);
