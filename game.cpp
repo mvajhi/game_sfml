@@ -205,7 +205,7 @@ void Game::update()
 {
     the_window.get_events();
     the_player.update();
-    update_collision();
+    update_collisions();
     set_score_and_health();
 }
 
