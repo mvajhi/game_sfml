@@ -74,3 +74,12 @@ const float DEFAULT_VELOCITY_MIN = 1    * BLOCK_SIZE / 100;
 const float DEFAULT_ACCELERATION = 5    * BLOCK_SIZE / 100;
 const float DEFAULT_DRAG = 0.7          ;
 const float DEFAULT_GRAVITY = 1         * BLOCK_SIZE / 100;
+
+const int DEFAULT_HELTH = 3;
+const int DEFAULT_SCORE = 0;
+
+const int FONT_SIZE = 35;
+const Color FONT_COLOR(Color::White);
+
+const int WINDOW_W = 900;
+const int WINDOW_H = 600;

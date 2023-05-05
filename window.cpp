@@ -24,13 +24,13 @@ void window::close()
     the_window.close();
 }
 
-void window::render(vector<Sprite> sprites, Vector2f camera_position)
+void window::render(vector<Drawable *> output, Vector2f camera_position)
 {
     camera_position = Vector2f(camera_position.x, camera_position.y);
 
     the_window.clear(Color(119, 181, 254, 255));
-    for (auto sprite : sprites)
-        the_window.draw(sprite);
+    for (auto i : output)
+        the_window.draw(*i);
     the_window.setView(View(camera_position, Vector2f(900, 600)));
     the_window.display();
 }

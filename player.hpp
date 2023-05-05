@@ -31,6 +31,8 @@ private:
 
     void update_move();
     void move(Vector2f dir);
+    int score;
+    int health;
 
 public:
     Player(string texture_file_addr);
@@ -48,4 +50,6 @@ public:
     void reset_velocity_x();
     void set_position(float x, float y);
     void move(float x, float y);
+    int get_score();
+    int get_health();
 };

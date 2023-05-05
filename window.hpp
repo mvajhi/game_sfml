@@ -15,5 +15,5 @@ public:
     RenderWindow &get_window();
     void get_events();
     void close();
-    void render(vector<Sprite> sprites, Vector2f camera_position);
+    void render(vector<Drawable *> output, Vector2f camera_position);
 };
