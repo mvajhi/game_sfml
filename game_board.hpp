@@ -10,6 +10,8 @@ private:
         Sprite floor;
         Sprite portal;
         vector<Sprite> floors;
+        
+
 
 
 public:

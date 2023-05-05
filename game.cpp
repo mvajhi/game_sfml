@@ -201,8 +201,11 @@ Game::Game() : the_window(WINDOW_W, WINDOW_H, "game", this),
                the_player(PLAYER_IMG),
                menu_manager(this, the_window.get_window())
 {
+    t_pause.loadFromFile(PAUSE_IMG);
+    pause.setTexture(t_pause);
+    pause.setScale(PAUSE_SCALE,PAUSE_SCALE);
+    
     menu_manager.show_menu(START_MENU);
-
     initilaize_font();
 }
 
@@ -213,10 +216,12 @@ RenderWindow &Game::get_window()
 
 void Game::update()
 {
+
     the_window.get_events();
     the_player.update();
     update_collisions();
     set_score_and_health();
+    pause.setPosition(the_player.get_position() + Vector2f(-WINDOW_W/2+BLOCK_SIZE/2,-WINDOW_H/2+BLOCK_SIZE/4));
 }
 
 void Game::render()
@@ -226,6 +231,7 @@ void Game::render()
     vector<Drawable *> output = sprites_to_drawables_ptr(sprites);
     output.push_back(&score);
     output.push_back(&health);
+    output.push_back(&pause);
     the_window.render(output, the_player.get_position());
 }
 
@@ -291,6 +297,7 @@ void Game::proccess_new_block(Vector2f position, char value)
         the_player.set_spawn(position.x, position.y);
         the_game_board.set_portal(position);
     }
+    
     // the_player.set_position(position.x, position.y);
     // else if (value == PLAYER_MAP_SYMBOLE)
     // TODO

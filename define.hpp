@@ -38,6 +38,7 @@ const string MAP_L1 = MAPS + "/level1.map";
 const string PLAYER_IMG = IMG + "/player.png";
 const string FLOOR_IMG = IMG + "/floor.png"; 
 const string PORTAL_IMG = IMG + "/portal.png"; 
+const string PAUSE_IMG = IMG + "/pause.png";
 const string BACKGROUND_IMG = IMG + "/back.jpg"; 
 const string ADDR_FONT = ASSETS + "/font.ttf";
 const string ADDR_FONT_2 = ASSETS + "/arial.ttf";
@@ -57,6 +58,7 @@ const float PLAYER_SPEED = 10;
 const float BLOCK_SIZE = 100;
 //!!WARNING image size should set
 const int IMG_FLOOR_SIZE = 100;
+const int IMG_PAUSE_SIZE = 390;
 const int IMG_COIN_SIZE = 100;
 const int IMG_DIMEND_SIZE = 100;
 const int IMG_PORTAL_SIZE = 134;
@@ -64,6 +66,7 @@ const int IMG_PLAYER_SIZE = 100;
 const int IMG_PLAYER_SIZE_H = 100;
 const int IMG_PLAYER_SIZE_W = 95;
 
+const float PAUSE_SCALE = BLOCK_SIZE * 1.0 / IMG_PAUSE_SIZE;
 const float FLOOR_SCALE = BLOCK_SIZE * 1.0 / IMG_FLOOR_SIZE;
 const float COIN_SCALE = BLOCK_SIZE * 1.0 / IMG_COIN_SIZE;
 const float DIMEND_SCALE = BLOCK_SIZE * 1.0 / IMG_DIMEND_SIZE;

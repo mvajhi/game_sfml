@@ -10,6 +10,9 @@ Game_board::Game_board(/* args */)
         portal.setTexture(t_portal);
         portal.setScale(PORTAL_SCALE, PORTAL_SCALE);
 
+        
+        
+
         // FloatRect f_bounds = floor.getGlobalBounds();
         // floor.setOrigin(f_bounds.left + f_bounds.width / 2,
         //                 f_bounds.top + f_bounds.height / 2);
@@ -47,5 +50,6 @@ vector<Sprite> Game_board::get_board()
 {
         vector<Sprite> output = floors;
         output.push_back(portal);
+        
         return output;
 }

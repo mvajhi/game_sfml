@@ -16,6 +16,8 @@ private:
     Text score;
     Text health;
     Font font;
+    Texture t_pause;
+    Sprite pause;
 
     void update_collisions();
     void check_2_shape_collision(Vector2f person_pos, Vector2f object_pos,bool report[] , Vector2f move_size);
