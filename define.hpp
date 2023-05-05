@@ -40,6 +40,7 @@ const string FLOOR_IMG = IMG + "/floor.png";
 const string DIAMOND_IMG = IMG + "/diamond.png";
 const string STAR_IMG = IMG + "/star.png";
 const string PORTAL_IMG = IMG + "/portal.png"; 
+const string BOY_TURTLE_IMG = IMG + "/boy_turtle.png";
 const string BACKGROUND_IMG = IMG + "/back.jpg"; 
 const string ADDR_FONT = ASSETS + "/font.ttf";
 const string ADDR_FONT_2 = ASSETS + "/arial.ttf";
@@ -48,6 +49,7 @@ const string FLOOR_MAP_SYMBOLE = "#";
 const string PLAYER_MAP_SYMBOLE = "P";
 const string DIAMOND_SYMBOL = "^";
 const string STAR_SYMBOL = "*";
+const string BOY_TURTLE_SYMBOL = "@";
 
 const int UP = 0;
 const int RIGHT = 1;
@@ -67,6 +69,7 @@ const int IMG_PORTAL_SIZE = 134;
 const int IMG_PLAYER_SIZE = 100;
 const int IMG_PLAYER_SIZE_H = 100;
 const int IMG_PLAYER_SIZE_W = 95;
+const int IMG_BOY_TURTLE = 156;
 
 const float FLOOR_SCALE = BLOCK_SIZE * 1.0 / IMG_FLOOR_SIZE;
 const float STAR_SCALE = BLOCK_SIZE * 1.0 / IMG_STAR_SIZE;
@@ -74,6 +77,7 @@ const float DIMEND_SCALE = BLOCK_SIZE * 1.0 / IMG_DIMEND_SIZE;
 const float PORTAL_SCALE = BLOCK_SIZE * 1.0 / IMG_PORTAL_SIZE;
 const float PLAYER_SCALE_X = BLOCK_SIZE * 1.0 / IMG_PLAYER_SIZE_H;
 const float PLAYER_SCALE_Y = BLOCK_SIZE * 1.0 / IMG_PLAYER_SIZE_W;
+const float BOY_TURTLE_SCALE = BLOCK_SIZE * 1.0 / IMG_BOY_TURTLE;
 
 const float ANIME_PLAYER_SPEED = 0.02;
 

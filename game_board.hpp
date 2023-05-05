@@ -16,6 +16,10 @@ private:
         Texture t_star;
         Sprite star;
         vector<Sprite> stars;
+        Texture t_boy_turtle;
+        Sprite boy_turtle;
+        vector<Sprite> boy_turtles;
+
 
 
 public:
@@ -25,6 +29,8 @@ public:
         void add_new_floor(Vector2f position);
         void add_new_diamond(Vector2f position);
         void add_new_star(Vector2f position);
+        void add_new_boy_turtle(Vector2f possition);
+
         void set_portal(Vector2f position);
         void reset_map();
 
@@ -32,6 +38,7 @@ public:
         vector<FloatRect> get_floors_bound();
         vector<FloatRect> get_stars_bound();
         vector<FloatRect> get_diamonds_bound();
+        vector<FloatRect> get_boy_turtles_bound();
         vector<Sprite> get_board();
 
         void remove_dimend(int pos);

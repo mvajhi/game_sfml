@@ -321,6 +321,10 @@ void Game::proccess_new_block(Vector2f position, char value)
         the_player.set_spawn(position.x, position.y);
         the_game_board.set_portal(position);
     }
+    else if (value == BOY_TURTLE_SYMBOL)
+    {
+        the_game_board.add_new_boy_turtle(position);
+    }
     // the_player.set_position(position.x, position.y);
     // else if (value == PLAYER_MAP_SYMBOLE)
     // TODO

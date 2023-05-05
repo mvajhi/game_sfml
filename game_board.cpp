@@ -18,6 +18,10 @@ Game_board::Game_board(/* args */)
         portal.setTexture(t_portal);
         portal.setScale(PORTAL_SCALE, PORTAL_SCALE);
 
+        t_boy_turtle.loadFromFile(BOY_TURTLE_IMG);
+        boy_turtle.setTexture(t_boy_turtle);
+        boy_turtle.setScale(BOY_TURTLE_SCALE,BOY_TURTLE_SCALE);
+
         // FloatRect f_bounds = floor.getGlobalBounds();
         // floor.setOrigin(f_bounds.left + f_bounds.width / 2,
         //                 f_bounds.top + f_bounds.height / 2);
@@ -41,7 +45,12 @@ void Game_board::add_new_star(Vector2f position)
         tmp_star.setPosition(position.x, position.y);
         stars.push_back(tmp_star);
 }
-
+void Game_board::add_new_boy_turtle(Vector2f position)
+{
+        Sprite tmp_boy_turtle = boy_turtle;
+        tmp_boy_turtle.setPosition(position.x, position.y);
+        boy_turtles.push_back(tmp_boy_turtle);                
+}
 void Game_board::set_portal(Vector2f position)
 {
         portal.setPosition(position);
@@ -76,13 +85,22 @@ vector<FloatRect> Game_board::get_diamonds_bound()
 
         return diamonds_;
 }
+vector<FloatRect> Game_board::get_boy_turtles_bound()
+{
+        vector<FloatRect> boy_turtles_;
+        for (size_t i = 0; i < boy_turtles.size(); i++)
+                boy_turtles_.push_back(boy_turtles[i].getGlobalBounds());
+
+        return boy_turtles_;
+}
 vector<Sprite> Game_board::get_board()
 {
         vector<Sprite> output;
-        output.reserve(floors.size() + diamonds.size() + stars.size());
+        output.reserve(floors.size() + diamonds.size() + stars.size() + boy_turtles.size());
         output.insert(output.end(), floors.begin(), floors.end());
         output.insert(output.end(), diamonds.begin(), diamonds.end());
         output.insert(output.end(), stars.begin(), stars.end());
+        output.insert(output.end(), boy_turtles.begin(), boy_turtles.end());
 
         output.push_back(portal);
 
