@@ -5,12 +5,14 @@
 #include "player.hpp"
 #include "game_board.hpp"
 #include "menu_manager.hpp"
+#include "boy.hpp"
 
 class Game
 {
 private:
     window the_window;
-    Player the_player;
+    // Player the_player;
+    Boy the_player;
     Game_board the_game_board;
     Menu_manager menu_manager;
 

@@ -118,7 +118,7 @@ void Game::collision_player_and_scores()
     for (size_t i = 0; i < diamonds.size(); i++)
         if (diamonds[i].intersects(player_bound))
         {
-            the_player.add_score(DIAMOND_SCORE);
+            // the_player.add_score(DIAMOND_SCORE);
             the_game_board.remove_diamond(i);
             return;
         }
@@ -126,14 +126,15 @@ void Game::collision_player_and_scores()
     for (size_t i = 0; i < stars.size(); i++)
         if (stars[i].intersects(player_bound))
         {
-            the_player.add_score(STAR_SCORE);
+            // the_player.add_score(STAR_SCORE);
             the_game_board.remove_star(i);
             return;
         }
 }
 
 Game::Game() : the_window(WINDOW_W, WINDOW_H, "game", this),
-               the_player(PLAYER_IMG),
+            //    the_player(PLAYER_IMG),
+               the_player(BOY_IMG),
                menu_manager(this, the_window.get_window())
 {
     t_pause.loadFromFile(PAUSE_IMG);
@@ -272,12 +273,14 @@ vector<Drawable *> Game::sprites_to_drawables_ptr(vector<Sprite> &sprites)
 }
 string Game::show_score()
 {
-    int score_val = the_player.get_score();
+    // int score_val = the_player.get_score();
+    int score_val = 0;
     return "score : " + to_string(score_val);
 }
 string Game::show_health()
 {
-    int health_val = the_player.get_health();
+    // int health_val = the_player.get_health();
+    int health_val = 0;
     return "health : " + to_string(health_val);
 }
 void Game::update_UI()
