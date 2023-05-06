@@ -1,10 +1,11 @@
 #include "window.hpp"
 #include "game.hpp"
 
-window::window(int page_width, int page_hight, string page_name, Game *game) : the_window(VideoMode(page_width, page_hight), page_name, Style::Close | Style::Titlebar)
+window::window(int page_width, int page_hight, string page_name, Game *game)
+    : the_window(VideoMode(page_width, page_hight), page_name, Style::Close | Style::Titlebar)
 {
     the_game = game;
-    the_window.setFramerateLimit(60);
+    the_window.setFramerateLimit(MAX_FRAME);
 }
 
 RenderWindow &window::get_window()
@@ -28,9 +29,11 @@ void window::render(vector<Drawable *> output, Vector2f camera_position)
 {
     camera_position = Vector2f(camera_position.x, camera_position.y);
 
-    the_window.clear(Color(119, 181, 254, 255));
+    the_window.clear(GAME_BACK_COLOR);
+
     for (auto i : output)
         the_window.draw(*i);
-    the_window.setView(View(camera_position, Vector2f(900, 600)));
+    the_window.setView(View(camera_position, Vector2f(WINDOW_W, WINDOW_H)));
+
     the_window.display();
 }

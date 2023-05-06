@@ -8,6 +8,12 @@ private:
     Sprite sprite;
     Texture texture;
 
+    // initilaize
+    void initilaize_sprite(string texture_file_addr);
+    void initilaize_anime();
+    void initilaize_move();
+    void initilaize_health_and_score();
+
     // anime
     IntRect move_frame;
     Clock animation_clock;
@@ -19,6 +25,8 @@ private:
     void update_animation();
     void update_left_animation();
     void update_right_animation();
+    void update_IDL_animation();
+    void update_anime_state();
 
     // move
     Vector2f pre_position;
@@ -32,17 +40,22 @@ private:
     void update_move();
     void move(Vector2f dir);
 
-    //score and health
+    // score and health
     int score;
     int health;
+    Vector2f spawn_point;
 
 public:
     Player(string texture_file_addr);
-    void move_handel(int direct);
     void update();
+    void set_spawn(float x, float y);
+
+    //outputs
     Sprite get_sprite();
     Vector2f get_position();
-    void set_spawn(float x, float y);
+
+    // move
+    void move_handel(int direct);
 
     // collision
     FloatRect get_global_bound();
@@ -54,7 +67,7 @@ public:
     Vector2f get_pre_position();
     Vector2f get_velocity();
 
-    //score and health
+    // score and health
     int get_score();
     int get_health();
     void add_score(int value);

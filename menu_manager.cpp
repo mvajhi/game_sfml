@@ -29,6 +29,9 @@ void Menu_manager::show_menu(int page = DEFAULT_PAGE)
 {
     available_page = page;
 
+    window.setView(View(Vector2f(WINDOW_W / 2, WINDOW_H / 2),
+                        Vector2f(WINDOW_W, WINDOW_H)));
+
     while (window.isOpen())
     {
         if (available_page == SHOW_GAME)
@@ -36,24 +39,12 @@ void Menu_manager::show_menu(int page = DEFAULT_PAGE)
 
         Menu *page = find_avail_page();
 
-        Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == Event::Closed)
-            {
-                window.close();
-            }
-            else
-            {
-                page->handle_event(event);
-            }
-        }
+        handel_events(page);
 
         window.clear();
 
         page->draw();
 
-        window.setView(View(Vector2f(WINDOW_W / 2, WINDOW_H / 2), Vector2f(900, 600)));
         window.display();
     }
 }
@@ -76,6 +67,22 @@ Menu *Menu_manager::find_avail_page()
         break;
     }
     return nullptr;
+}
+
+void Menu_manager::handel_events(Menu *page)
+{
+    Event event;
+    while (window.pollEvent(event))
+    {
+        if (event.type == Event::Closed)
+        {
+            window.close();
+        }
+        else
+        {
+            page->handle_event(event);
+        }
+    }
 }
 
 void Menu_manager::initialize_level_menu()

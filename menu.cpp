@@ -10,7 +10,8 @@ void Menu::add_button(string text, function<void()> on_click, Color button_color
     Vector2f buttonSize(BUTTON_WIDTH, BUTTON_HEIGHT);
     Vector2f buttonPosition(FIRST_BUTTON_POSITION +
                             Vector2f(0, m_buttons.size() * buttonSize.y) +
-                            Vector2f(m_buttons.size() * BUTTON_SEPRATE.x, m_buttons.size() * BUTTON_SEPRATE.y));
+                            Vector2f(m_buttons.size() * BUTTON_SEPRATE.x,
+                                     m_buttons.size() * BUTTON_SEPRATE.y));
     RectangleShape buttonShape(buttonSize);
     buttonShape.setPosition(buttonPosition);
     buttonShape.setFillColor(button_color);
@@ -36,43 +37,35 @@ void Menu::draw()
 void Menu::handle_event(Event &event)
 {
     if (event.type == Event::MouseMoved)
-    {
         handle_mouse_moved(event.mouseMove.x, event.mouseMove.y);
-    }
     else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
-    {
         handle_mouse_button_pressed(event.mouseButton.x, event.mouseButton.y);
-    }
 }
 
 void Menu::handle_mouse_moved(int x, int y)
 {
-    int hoveredButtonIndex = -1;
+    int hovered_button_index = NO_INDEX;
     for (size_t i = 0; i < m_buttons.size(); ++i)
-    {
         if (m_buttons[i].contains(x, y))
         {
-            hoveredButtonIndex = static_cast<int>(i);
+            hovered_button_index = (int)i;
             break;
         }
-    }
 
-    if (hoveredButtonIndex != m_hovered_button_index)
+    if (hovered_button_index != m_hovered_button_index)
     {
-        if (m_hovered_button_index != -1)
+        if (m_hovered_button_index != NO_INDEX)
             m_buttons[m_hovered_button_index].mouse_outside();
 
-        if (hoveredButtonIndex != -1)
-            m_buttons[hoveredButtonIndex].mouse_inside();
+        if (hovered_button_index != NO_INDEX)
+            m_buttons[hovered_button_index].mouse_inside();
 
-        m_hovered_button_index = hoveredButtonIndex;
+        m_hovered_button_index = hovered_button_index;
     }
 }
 
 void Menu::handle_mouse_button_pressed(int x, int y)
 {
-    if (m_hovered_button_index != -1)
-    {
+    if (m_hovered_button_index != NO_INDEX)
         m_buttons[m_hovered_button_index].click();
-    }
 }

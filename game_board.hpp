@@ -26,16 +26,19 @@ private:
         vector<Sprite> boy_turtles;
 
 
-
 public:
         Game_board(/* args */);
 
         //initialize
+        void initialize_floor();
+        void initialize_diamond();
+        void initialize_star();
+        void initialize_portal();
+        void initialize_boy();
         void add_new_floor(Vector2f position);
         void add_new_diamond(Vector2f position);
         void add_new_star(Vector2f position);
         void add_new_boy_turtle(Vector2f possition);
-
         void set_portal(Vector2f position);
         void reset_map();
 
@@ -46,6 +49,7 @@ public:
         vector<FloatRect> get_boy_turtles_bound();
         vector<Sprite> get_board();
 
-        void remove_dimend(int pos);
+        // scores
+        void remove_diamond(int pos);
         void remove_star(int pos);
 };

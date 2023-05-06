@@ -23,5 +23,4 @@ private:
     function<void()> on_click;
     Color button_color;
     Color hover_color;
-
 };

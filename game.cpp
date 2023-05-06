@@ -7,32 +7,31 @@ void Game::check_2_shape_collision(Vector2f person_pos, Vector2f object_pos, boo
     float x = object_pos.x;
     float y = object_pos.y;
 
-    if (person_pos.y <= y && y < person_pos.y + BLOCK_SIZE &&
+    if (are_they_in_one_line_y(person_pos.y, y) &&
         x <= person_pos.x + move_size.x + BLOCK_SIZE && person_pos.x + move_size.x + BLOCK_SIZE < x + BLOCK_SIZE)
-    {
-        // cout << "right\n";
         report[RIGHT] = true;
-    }
 
-    if (person_pos.x - BLOCK_SIZE <= x && x < person_pos.x + BLOCK_SIZE && y <= person_pos.y + move_size.y + BLOCK_SIZE && person_pos.y + move_size.y + BLOCK_SIZE < y + BLOCK_SIZE)
-    {
-        // cout << "down\n";
+    if (are_they_in_one_line_x(person_pos.x, x) &&
+        y <= person_pos.y + move_size.y + BLOCK_SIZE && person_pos.y + move_size.y + BLOCK_SIZE < y + BLOCK_SIZE)
         report[DOWN] = true;
-    }
 
-    if (person_pos.y <= y && y < person_pos.y + BLOCK_SIZE &&
+    if (are_they_in_one_line_y(person_pos.y, y) &&
         x < person_pos.x - move_size.x && person_pos.x - move_size.x <= x + BLOCK_SIZE)
-    {
-        // cout << "left\n";
         report[LEFT] = true;
-    }
 
-    if (person_pos.x - BLOCK_SIZE <= x && x < person_pos.x + BLOCK_SIZE &&
+    if (are_they_in_one_line_x(person_pos.x, x) &&
         y - BLOCK_SIZE < person_pos.y - move_size.y - BLOCK_SIZE && person_pos.y - move_size.y - BLOCK_SIZE <= y)
-    {
-        // cout << "up\n";
         report[UP] = true;
-    }
+}
+
+bool Game::are_they_in_one_line_y(float person_y, float obj_y)
+{
+    return person_y <= obj_y && obj_y < person_y + BLOCK_SIZE;
+}
+
+bool Game::are_they_in_one_line_x(float person_x, float obj_x)
+{
+    return person_x - BLOCK_SIZE <= obj_x && obj_x < person_x + BLOCK_SIZE;
 }
 
 void Game::check_vertical_collision(FloatRect floor, float dy)
@@ -52,7 +51,7 @@ void Game::check_vertical_collision(FloatRect floor, float dy)
     {
         the_player.reset_velocity_y();
         the_player.set_position(the_player.get_position().x,
-                                floor.top + the_player.get_global_bound().height + 10);
+                                the_player.get_position().y - dy);
     }
 }
 
@@ -64,7 +63,7 @@ void Game::check_horizontal_collision(FloatRect floor, float dx)
     if (report[RIGHT])
     {
         the_player.reset_velocity_x();
-        the_player.set_position(the_player.get_position().x - dx,
+        the_player.set_position(the_player.get_position().x - dx - EPSILON,
                                 the_player.get_position().y);
     }
 
@@ -72,7 +71,7 @@ void Game::check_horizontal_collision(FloatRect floor, float dx)
     if (report[LEFT])
     {
         the_player.reset_velocity_x();
-        the_player.set_position(the_player.get_position().x - dx,
+        the_player.set_position(the_player.get_position().x - dx + EPSILON,
                                 the_player.get_position().y);
     }
 }
@@ -85,6 +84,7 @@ bool Game::can_jump()
         bool report[4] = {false, false, false, false};
 
         check_2_shape_collision(the_player.get_position(), Vector2f(floor.left, floor.top), report, Vector2f(0, 20));
+
         if (report[DOWN])
             return true;
     }
@@ -99,100 +99,6 @@ void Game::update_collisions()
 
 void Game::collision_player_and_floors()
 {
-    // if (the_player.get_global_bound().top + the_player.get_global_bound().height > the_window.get_window().getSize().y)
-    // {
-    //     the_player.reset_velocity_y();
-    //     the_player.set_position(the_player.get_global_bound().left ,
-    //                             the_window.get_window().getSize().y - the_player.get_global_bound().height / 2);
-    // }
-    // vector<FloatRect> floors = the_game_board.get_floors_bound();
-    // for (auto floor : floors)
-    // {
-    //     if (floor.intersects(the_player.get_global_bound()))
-    //     {
-    //         float dx = the_player.get_position().x - the_player.get_pre_position().x;
-    //         float dy = the_player.get_position().y - the_player.get_pre_position().y;
-    //         if (std::abs(dx) > std::abs(dy))
-    //         {
-    //             if (dx > 0)
-    //             {
-    //                 // حرکت به سمت راست
-    //             }
-    //             else
-    //             {
-    //                 // حرکت به سمت چپ
-    //             }
-    //         }
-    //         else
-    //         {
-    //             if (dy > 0)
-    //             {
-    //                 // حرکت به سمت پایین
-    //                 // cout << the_player.get_global_bound().height << "floor got up\n";
-    //                 the_player.reset_velocity_y();
-    //                 the_player.set_position(the_player.get_global_bound().left,
-    //                                         floor.top - the_player.get_global_bound().height);
-    //             }
-    //             else
-    //             {
-    //                 // حرکت به سمت بالا
-    //             }
-    //         }
-    //         if (dy > 0)
-    //         {
-    //             // حرکت به سمت پایین
-    //             // cout << the_player.get_global_bound().height << "floor got up\n";
-    //             the_player.reset_velocity_y();
-    //             the_player.set_position(the_player.get_global_bound().left,
-    //                                     floor.top - the_player.get_global_bound().height);
-    //         }
-    //     }
-    // if (
-    //     (
-    //         (
-    //             floor.top <= the_player.get_global_bound().top &&
-    //             the_player.get_global_bound().top <= floor.top + floor.height
-    //         )
-    //         ||
-    //         (
-    //             floor.top <= the_player.get_global_bound().top + the_player.get_global_bound().height &&
-    //             the_player.get_global_bound().top + the_player.get_global_bound().height <= floor.top + floor.height
-    //         )
-    //     ) &&
-    //     floor.intersects(the_player.get_global_bound()) &&
-    //     true)
-    // {
-    //     cout << the_player.get_global_bound().width << "wall got up\n";
-    //     the_player.reset_velocity_x();
-    //     the_player.set_position(floor.left + the_player.get_global_bound().width ,
-    //                             the_player.get_position().y
-    //                              );
-    // }
-    //     if (
-    //         (
-    //             (
-    //                 floor.left < the_player.get_global_bound().left &&
-    //                 the_player.get_global_bound().left < floor.left + floor.width
-    //             )
-    //             ||
-    //             (
-    //                 floor.left < the_player.get_global_bound().left + the_player.get_global_bound().width &&
-    //              the_player.get_global_bound().left + the_player.get_global_bound().width < floor.left + floor.width
-    //             )
-    //         ) &&
-    //         // the_player.get_global_bound().top > floor.top &&
-    //         floor.intersects(the_player.get_global_bound()) &&
-    //         // the_player.get_global_bound().top + the_player.get_global_bound().height > floor.top + floor.height &&
-    //         // the_player.get_global_bound().top + the_player.get_global_bound().height > floor.top &&
-    //         true)
-    //     {
-    //         cout << the_player.get_global_bound().height << "floor got up\n";
-    //         the_player.reset_velocity_y();
-    //         the_player.set_position(the_player.get_global_bound().left,
-    //                                 floor.top - the_player.get_global_bound().height );
-    //     }
-    // }
-
     vector<FloatRect> floors = the_game_board.get_floors_bound();
     for (auto floor : floors)
     {
@@ -205,16 +111,18 @@ void Game::collision_player_and_floors()
 
 void Game::collision_player_and_scores()
 {
-    vector<FloatRect> dimends = the_game_board.get_diamonds_bound();
+    vector<FloatRect> diamonds = the_game_board.get_diamonds_bound();
     vector<FloatRect> stars = the_game_board.get_stars_bound();
     FloatRect player_bound = the_player.get_global_bound();
-    for (size_t i = 0; i < dimends.size(); i++)
-        if (dimends[i].intersects(player_bound))
+
+    for (size_t i = 0; i < diamonds.size(); i++)
+        if (diamonds[i].intersects(player_bound))
         {
-            the_player.add_score(DIMEND_SCORE);
-            the_game_board.remove_dimend(i);
+            the_player.add_score(DIAMOND_SCORE);
+            the_game_board.remove_diamond(i);
             return;
         }
+
     for (size_t i = 0; i < stars.size(); i++)
         if (stars[i].intersects(player_bound))
         {
@@ -230,8 +138,8 @@ Game::Game() : the_window(WINDOW_W, WINDOW_H, "game", this),
 {
     t_pause.loadFromFile(PAUSE_IMG);
     pause.setTexture(t_pause);
-    pause.setScale(PAUSE_SCALE,PAUSE_SCALE);
-    
+    pause.setScale(PAUSE_SCALE, PAUSE_SCALE);
+
     menu_manager.show_menu(START_MENU);
     initilaize_font();
 }
@@ -243,12 +151,10 @@ RenderWindow &Game::get_window()
 
 void Game::update()
 {
-
     the_window.get_events();
     the_player.update();
     update_collisions();
-    set_score_and_health();
-    pause.setPosition(the_player.get_position() + Vector2f(-WINDOW_W/2+BLOCK_SIZE/2,-WINDOW_H/2+BLOCK_SIZE/4));
+    update_UI();
 }
 
 void Game::render()
@@ -259,6 +165,7 @@ void Game::render()
     output.push_back(&score);
     output.push_back(&health);
     output.push_back(&pause);
+
     the_window.render(output, the_player.get_position());
 }
 
@@ -283,8 +190,6 @@ void Game::handel_keyboard_event(Event event)
     else if (event.key.code == Keyboard::W)
         if (can_jump())
             the_player.move_handel(UP);
-    // else if (event.key.code == Keyboard::S)
-    //     the_player.move_handel(DOWN);
 }
 
 void Game::handel_mouse_event(Event event)
@@ -337,18 +242,13 @@ void Game::proccess_new_block(Vector2f position, char value)
         the_game_board.add_new_diamond(position);
     else if (value == STAR_SYMBOL)
         the_game_board.add_new_star(position);
+    else if (value == BOY_TURTLE_SYMBOL)
+        the_game_board.add_new_boy_turtle(position);
     else if (value == PLAYER_MAP_SYMBOLE)
     {
         the_player.set_spawn(position.x, position.y);
         the_game_board.set_portal(position);
     }
-    else if (value == BOY_TURTLE_SYMBOL)
-    {
-        the_game_board.add_new_boy_turtle(position);
-    }
-    // the_player.set_position(position.x, position.y);
-    // else if (value == PLAYER_MAP_SYMBOLE)
-    // TODO
 }
 
 void Game::proccess_text_map(vector<string> text_map)
@@ -360,8 +260,9 @@ void Game::proccess_text_map(vector<string> text_map)
 
 Vector2f Game::convert_text_to_pixle_pos(Vector2f position)
 {
-    return Vector2f((position.x + 10.5) * BLOCK_SIZE, (position.y + 0.5) * BLOCK_SIZE);
+    return Vector2f(position.x * BLOCK_SIZE, position.y * BLOCK_SIZE);
 }
+
 vector<Drawable *> Game::sprites_to_drawables_ptr(vector<Sprite> &sprites)
 {
     vector<Drawable *> output;
@@ -379,22 +280,28 @@ string Game::show_health()
     int health_val = the_player.get_health();
     return "health : " + to_string(health_val);
 }
-void Game::set_score_and_health()
+void Game::update_UI()
 {
     score.setString(show_score());
     score.setOrigin(score.getGlobalBounds().width / 2, score.getGlobalBounds().height / 2);
-    score.setPosition(the_player.get_position() + Vector2f(0, -WINDOW_H / 2 + BLOCK_SIZE / 2));
+    score.setPosition(the_player.get_position() + SCORE_UI_POS);
+
     health.setString(show_health());
-    health.setOrigin(score.getGlobalBounds().width / 2, score.getGlobalBounds().height / 2);
-    health.setPosition(the_player.get_position() + Vector2f(WINDOW_W / 2 - BLOCK_SIZE * 3 / 2, -WINDOW_H / 2 + BLOCK_SIZE / 2));
+    health.setOrigin(health.getGlobalBounds().width / 2, health.getGlobalBounds().height / 2);
+    health.setPosition(the_player.get_position() + HEALTH_UI_POS);
+
+    pause.setPosition(the_player.get_position() + Vector2f(-WINDOW_W / 2 + BLOCK_SIZE / 2,
+                                                           -WINDOW_H / 2 + BLOCK_SIZE / 4));
 }
 
 void Game::initilaize_font()
 {
     font.loadFromFile(ADDR_FONT_2);
+
     score.setFont(font);
     score.setCharacterSize(FONT_SIZE);
     score.setFillColor(FONT_COLOR);
+
     health.setFont(font);
     health.setCharacterSize(FONT_SIZE);
     health.setFillColor(FONT_COLOR);

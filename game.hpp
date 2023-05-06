@@ -13,17 +13,25 @@ private:
     Player the_player;
     Game_board the_game_board;
     Menu_manager menu_manager;
+
+    // UI
     Text score;
     Text health;
     Font font;
     Texture t_pause;
     Sprite pause;
 
+    string show_score();
+    string show_health();
+    void update_UI();
+
     //collision
     void update_collisions();
     void collision_player_and_floors();
     void collision_player_and_scores();
     void check_2_shape_collision(Vector2f person_pos, Vector2f object_pos,bool report[] , Vector2f move_size);
+    bool are_they_in_one_line_y(float person_y, float obj_y);
+    bool are_they_in_one_line_x(float person_x, float obj_x);
     void check_vertical_collision(FloatRect floor, float dy);
     void check_horizontal_collision(FloatRect floor, float dx);
     bool can_jump();
@@ -37,10 +45,6 @@ private:
     //display
     vector<Drawable *> sprites_to_drawables_ptr(vector<Sprite> &sprites);
     
-    //score
-    string show_score();
-    string show_health();
-    void set_score_and_health();
 
     //initilaize
     void initilaize_font();
@@ -53,13 +57,14 @@ public:
     Game(/* args */);
 
     RenderWindow &get_window();
+    void pre_update();
     void update();
     void render();
     void handel_event(Event event);
-    void pre_update();
 
     // map
     void read_level1();
 
+    // menu
     void show_menu();
 };

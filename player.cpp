@@ -1,7 +1,6 @@
 #include "player.hpp"
 #include <cmath>
 
-
 void Player::update_move()
 {
     velocity.x = velocity.x * drag;
@@ -18,11 +17,13 @@ void Player::move(Vector2f dir)
 {
     if (dir.x != 0)
         velocity.x = dir.x * acceleration;
-        
+
     if (dir.y != 0)
         velocity.y = dir.y * acceleration;
+
     if (abs(velocity.x) > velocity_max || (abs(velocity.y) > 0 && dir.x != 0))
         velocity.x = velocity_max * (signbit(velocity.x) ? -1 : 1);
+
     if (velocity.y > velocity_max)
         velocity.y = velocity_max * (signbit(velocity.y) ? -1 : 1);
 }
@@ -44,25 +45,10 @@ bool Player::is_dead()
 
 Player::Player(string texture_file_addr)
 {
-    texture.loadFromFile(texture_file_addr);
-    sprite.setTexture(texture);
-    sprite.setTextureRect(move_frame);
-    sprite.setScale(PLAYER_SCALE_X, PLAYER_SCALE_Y);
-
-    IDL_frame = IntRect(0, IMG_PLAYER_SIZE_H * 7, IMG_PLAYER_SIZE_W, IMG_PLAYER_SIZE_H);
-    move_frame = IntRect(0, IMG_PLAYER_SIZE_H * 7, IMG_PLAYER_SIZE, IMG_PLAYER_SIZE);
-    animation_clock.restart();
-    anime_state = IDL;
-
-    velocity = Vector2f(0, 0);
-    velocity_max = DEFAULT_VELOCITY_MAX;
-    velocity_min = DEFAULT_VELOCITY_MIN;
-    acceleration = DEFAULT_ACCELERATION;
-    drag = DEFAULT_DRAG;
-    gravity = DEFAULT_GRAVITY;
-    score=DEFAULT_SCORE;
-    health=DEFAULT_HELTH;
-    
+    initilaize_sprite(texture_file_addr);
+    initilaize_anime();
+    initilaize_move();
+    initilaize_health_and_score();
 }
 
 void Player::move_handel(int direct)
@@ -81,10 +67,6 @@ void Player::move_handel(int direct)
         move(Vector2f(0, -6));
         anime_state = UP;
         break;
-        // case DOWN:
-        //     move(Vector2f(0, 1));
-        //     anime_state = DOWN;
-        //     break;
 
     default:
         break;
@@ -99,32 +81,50 @@ void Player::update()
     update_move();
 }
 
+void Player::initilaize_sprite(string texture_file_addr)
+{
+    texture.loadFromFile(texture_file_addr);
+    sprite.setTexture(texture);
+    sprite.setTextureRect(move_frame);
+    sprite.setScale(PLAYER_SCALE_X, PLAYER_SCALE_Y);
+}
+
+void Player::initilaize_anime()
+{
+    IDL_frame = IntRect(0, IMG_PLAYER_SIZE_H * 7, IMG_PLAYER_SIZE_W, IMG_PLAYER_SIZE_H);
+    move_frame = IntRect(0, IMG_PLAYER_SIZE_H * 7, IMG_PLAYER_SIZE, IMG_PLAYER_SIZE);
+    animation_clock.restart();
+    anime_state = IDL;
+}
+
+void Player::initilaize_move()
+{
+    velocity = Vector2f(0, 0);
+    velocity_max = DEFAULT_VELOCITY_MAX;
+    velocity_min = DEFAULT_VELOCITY_MIN;
+    acceleration = DEFAULT_ACCELERATION;
+    drag = DEFAULT_DRAG;
+    gravity = DEFAULT_GRAVITY;
+}
+
+void Player::initilaize_health_and_score()
+{
+    score = DEFAULT_SCORE;
+    health = DEFAULT_HELTH;
+}
+
 void Player::update_animation()
 {
     if (anime_state == IDL)
-    {
-        if (last_anime_state == LEFT)
-            move_frame = IntRect(0, IMG_PLAYER_SIZE_H * 3, IMG_PLAYER_SIZE_W, IMG_PLAYER_SIZE_H);
-        else if (last_anime_state == RIGHT)
-            move_frame = IntRect(0, IMG_PLAYER_SIZE_H * 7, IMG_PLAYER_SIZE_W, IMG_PLAYER_SIZE_H);
-    }
+        update_IDL_animation();
+
     else if (anime_state == LEFT)
-    {
         update_left_animation();
-    }
+
     else if (anime_state == RIGHT)
-    {
         update_right_animation();
-    }
 
-    sprite.setTextureRect(move_frame);
-
-    last_anime_state = anime_state;
-
-    if (have_move)
-        have_move = false;
-    else
-        anime_state = IDL;
+    update_anime_state();
 }
 
 void Player::update_left_animation()
@@ -164,6 +164,28 @@ void Player::update_right_animation()
     }
 }
 
+void Player::update_IDL_animation()
+{
+    if (last_anime_state == LEFT)
+        move_frame = IntRect(0, PLAYER_IDL_LEFT,
+                             IMG_PLAYER_SIZE_W, IMG_PLAYER_SIZE_H);
+    else if (last_anime_state == RIGHT)
+        move_frame = IntRect(0, PLAYER_IDL_RIGHT,
+                             IMG_PLAYER_SIZE_W, IMG_PLAYER_SIZE_H);
+}
+
+void Player::update_anime_state()
+{
+    sprite.setTextureRect(move_frame);
+
+    last_anime_state = anime_state;
+
+    if (have_move)
+        have_move = false;
+    else
+        anime_state = IDL;
+}
+
 Sprite Player::get_sprite()
 {
     return sprite;
@@ -176,8 +198,9 @@ Vector2f Player::get_position()
 
 void Player::set_spawn(float x, float y)
 {
-    sprite.setPosition(x - BLOCK_SIZE * 1.0 / 2.0,
-                       y - BLOCK_SIZE * 1.0 / 2.0);
+    // 5 for avoid sticking to the ground and distance from the ground
+    sprite.setPosition(x, y - 5);
+    spawn_point = Vector2f(x, y - 5);
 }
 
 void Player::save_pre_position()
@@ -212,8 +235,7 @@ void Player::reset_velocity_x()
 
 void Player::set_position(float x, float y)
 {
-    sprite.setPosition(x,
-                       y);
+    sprite.setPosition(x, y);
 }
 
 void Player::move(float x, float y)
@@ -221,7 +243,10 @@ void Player::move(float x, float y)
     sprite.move(x, y);
 }
 int Player::get_score()
-{return score;}
+{
+    return score;
+}
 int Player::get_health()
-{return health;}
-
+{
+    return health;
+}

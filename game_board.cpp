@@ -2,29 +2,46 @@
 
 Game_board::Game_board(/* args */)
 {
+        initialize_floor();
+        initialize_diamond();
+        initialize_star();
+        initialize_portal();
+}
+
+void Game_board::initialize_floor()
+{
         t_floor.loadFromFile(FLOOR_IMG);
         floor.setTexture(t_floor);
         floor.setScale(FLOOR_SCALE, FLOOR_SCALE);
+}
 
+void Game_board::initialize_diamond()
+{
         t_diamond.loadFromFile(DIAMOND_IMG);
         diamond.setTexture(t_diamond);
-        diamond.setScale(DIMEND_SCALE, DIMEND_SCALE);
+        diamond.setScale(DIAMOND_SCALE, DIAMOND_SCALE);
+}
 
+void Game_board::initialize_star()
+{
         t_star.loadFromFile(STAR_IMG);
         star.setTexture(t_star);
         star.setScale(STAR_SCALE, STAR_SCALE);
 
+}
+
+void Game_board::initialize_portal()
+{
         t_portal.loadFromFile(PORTAL_IMG);
         portal.setTexture(t_portal);
         portal.setScale(PORTAL_SCALE, PORTAL_SCALE);
+}
 
+void Game_board::initialize_boy()
+{
         t_boy_turtle.loadFromFile(BOY_TURTLE_IMG);
         boy_turtle.setTexture(t_boy_turtle);
         boy_turtle.setScale(BOY_TURTLE_SCALE,BOY_TURTLE_SCALE);
-
-        // FloatRect f_bounds = floor.getGlobalBounds();
-        // floor.setOrigin(f_bounds.left + f_bounds.width / 2,
-        //                 f_bounds.top + f_bounds.height / 2);
 }
 
 void Game_board::add_new_floor(Vector2f position)
@@ -107,7 +124,7 @@ vector<Sprite> Game_board::get_board()
         return output;
 }
 
-void Game_board::remove_dimend(int pos)
+void Game_board::remove_diamond(int pos)
 {
         diamonds.erase(diamonds.begin() + pos);
 }
