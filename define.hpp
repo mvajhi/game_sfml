@@ -25,6 +25,7 @@ const int START_MENU = 0;
 const int LEVEL_MENU = 1;
 const int SHOW_GAME = 2;
 const int PAUSE_MENU = 3;
+const int WIN_MENU = 4;
 const int DEFAULT_PAGE = START_MENU;
 
 const int NO_INDEX = -1;
@@ -36,6 +37,7 @@ const string ASSETS = "./assets";
 const string IMG = ASSETS + "/img";
 const string MAPS = ASSETS + "/levels";
 const string MAP_L1 = MAPS + "/level1.map";
+const string MAP_L2 = MAPS + "/level2.map";
 const string PLAYER_IMG = IMG + "/player.png";
 const string BOY_IMG = IMG + "/boy.png";
 const string FLOOR_IMG = IMG + "/floor.png";
@@ -64,7 +66,7 @@ const int IDL = 4;
 const int NO_COLLISION = -1;
 
 // scale and size
-const float BLOCK_SIZE = 100;
+const float BLOCK_SIZE = 50;
 //!!WARNING image size should set
 const int IMG_FLOOR_SIZE = 100;
 const int IMG_PAUSE_SIZE = 390;

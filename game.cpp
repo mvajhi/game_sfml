@@ -91,10 +91,20 @@ bool Game::can_jump()
     return false;
 }
 
+void Game::collision_player_and_boys()
+{
+    vector<FloatRect> boys = the_game_board.get_boys_bound();
+    for (size_t i = 0; i < boys.size(); i++)
+        if (boys[i].intersects(the_player.get_global_bound()))
+            the_game_board.free_boy(i);
+}
+
 void Game::update_collisions()
 {
     collision_player_and_floors();
+    collision_boys_and_floors();
     collision_player_and_scores();
+    collision_player_and_boys();
 }
 
 void Game::collision_player_and_floors()
@@ -109,6 +119,47 @@ void Game::collision_player_and_floors()
     }
 }
 
+void Game::collision_boys_and_floors()
+{
+    for (size_t i = 0; i < the_game_board.get_boys().size(); i++)
+    {
+        vector<FloatRect> floors = the_game_board.get_floors_bound();
+        for (auto floor : floors)
+        {
+            float dx = the_game_board.get_boys()[i].get_position().x - the_game_board.get_boys()[i].get_pre_position().x;
+            float dy = the_game_board.get_boys()[i].get_position().y - the_game_board.get_boys()[i].get_pre_position().y;
+
+            bool report[4] = {false, false, false, false};
+
+            check_2_shape_collision(the_game_board.get_boys()[i].get_position(), Vector2f(floor.left, floor.top), report, Vector2f(0, 3));
+            if (report[DOWN])
+            {
+                the_game_board.get_boys()[i].reset_velocity_y();
+                the_game_board.get_boys()[i].set_position(the_game_board.get_boys()[i].get_position().x,
+                                                          the_game_board.get_boys()[i].get_position().y - dy);
+            }
+
+            check_2_shape_collision(the_game_board.get_boys()[i].get_position(), Vector2f(floor.left, floor.top), report, Vector2f(0, 0));
+            if (report[RIGHT])
+            {
+                the_game_board.get_boys()[i].go_left();
+                the_game_board.get_boys()[i].reset_velocity_x();
+                the_game_board.get_boys()[i].set_position(the_game_board.get_boys()[i].get_position().x - dx - EPSILON,
+                                                          the_game_board.get_boys()[i].get_position().y);
+            }
+
+            check_2_shape_collision(the_game_board.get_boys()[i].get_position(), Vector2f(floor.left, floor.top), report, Vector2f(0, 0));
+            if (report[LEFT])
+            {
+                the_game_board.get_boys()[i].go_right();
+                the_game_board.get_boys()[i].reset_velocity_x();
+                the_game_board.get_boys()[i].set_position(the_game_board.get_boys()[i].get_position().x - dx + EPSILON,
+                                                          the_game_board.get_boys()[i].get_position().y);
+            }
+        }
+    }
+}
+
 void Game::collision_player_and_scores()
 {
     vector<FloatRect> diamonds = the_game_board.get_diamonds_bound();
@@ -118,7 +169,7 @@ void Game::collision_player_and_scores()
     for (size_t i = 0; i < diamonds.size(); i++)
         if (diamonds[i].intersects(player_bound))
         {
-            // the_player.add_score(DIAMOND_SCORE);
+            the_player.add_score(DIAMOND_SCORE);
             the_game_board.remove_diamond(i);
             return;
         }
@@ -126,15 +177,26 @@ void Game::collision_player_and_scores()
     for (size_t i = 0; i < stars.size(); i++)
         if (stars[i].intersects(player_bound))
         {
-            // the_player.add_score(STAR_SCORE);
+            the_player.add_score(STAR_SCORE);
             the_game_board.remove_star(i);
             return;
         }
 }
 
+void Game::proccess_win()
+{
+    menu_manager.show_menu(WIN_MENU, the_player.get_score());
+    reset();
+}
+
+int Game::get_score()
+{
+    cout << the_player.get_score() <<endl;
+    return the_player.get_score();
+}
+
 Game::Game() : the_window(WINDOW_W, WINDOW_H, "game", this),
-            //    the_player(PLAYER_IMG),
-               the_player(BOY_IMG),
+               the_player(PLAYER_IMG),
                menu_manager(this, the_window.get_window())
 {
     t_pause.loadFromFile(PAUSE_IMG);
@@ -154,6 +216,7 @@ void Game::update()
 {
     the_window.get_events();
     the_player.update();
+    the_game_board.update();
     update_collisions();
     update_UI();
 }
@@ -203,17 +266,24 @@ void Game::handel_mouse_event(Event event)
         cout << "pause\n";
 
         menu_manager.show_menu(PAUSE_MENU);
+        if (menu_manager.reset)
+            reset();
     }
 }
 
 void Game::pre_update()
 {
+    if(the_game_board.is_all_boy_in_portal())
+    {
+        proccess_win();
+    }
     the_player.save_pre_position();
+    the_game_board.pre_update();
 }
 
-void Game::read_level1()
+void Game::read_level()
 {
-    vector<string> text_map = read_map_file(MAP_L1);
+    vector<string> text_map = read_map_file(menu_manager.level_path);
 
     proccess_text_map(text_map);
 }
@@ -221,6 +291,13 @@ void Game::read_level1()
 void Game::show_menu()
 {
     menu_manager.show_menu(START_MENU);
+}
+
+void Game::reset()
+{
+    the_game_board.reset_map();
+    the_player.reset();
+    read_level();
 }
 
 vector<string> Game::read_map_file(string address_file)
@@ -273,14 +350,12 @@ vector<Drawable *> Game::sprites_to_drawables_ptr(vector<Sprite> &sprites)
 }
 string Game::show_score()
 {
-    // int score_val = the_player.get_score();
-    int score_val = 0;
+    int score_val = the_player.get_score();
     return "score : " + to_string(score_val);
 }
 string Game::show_health()
 {
-    // int health_val = the_player.get_health();
-    int health_val = 0;
+    int health_val = the_player.get_health();
     return "health : " + to_string(health_val);
 }
 void Game::update_UI()

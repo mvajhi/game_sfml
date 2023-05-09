@@ -11,8 +11,7 @@ class Game
 {
 private:
     window the_window;
-    // Player the_player;
-    Boy the_player;
+    Player the_player;
     Game_board the_game_board;
     Menu_manager menu_manager;
 
@@ -30,6 +29,7 @@ private:
     //collision
     void update_collisions();
     void collision_player_and_floors();
+    void collision_boys_and_floors();
     void collision_player_and_scores();
     void check_2_shape_collision(Vector2f person_pos, Vector2f object_pos,bool report[] , Vector2f move_size);
     bool are_they_in_one_line_y(float person_y, float obj_y);
@@ -37,6 +37,7 @@ private:
     void check_vertical_collision(FloatRect floor, float dy);
     void check_horizontal_collision(FloatRect floor, float dx);
     bool can_jump();
+    void collision_player_and_boys();
 
     // map file
     vector<string> read_map_file(string address_file);
@@ -55,6 +56,9 @@ private:
     void handel_keyboard_event(Event event);
     void handel_mouse_event(Event event);
 
+    // win
+    void proccess_win();
+
 public:
     Game(/* args */);
 
@@ -63,10 +67,12 @@ public:
     void update();
     void render();
     void handel_event(Event event);
+    int get_score();
 
     // map
-    void read_level1();
+    void read_level();
 
     // menu
     void show_menu();
+    void reset();
 };

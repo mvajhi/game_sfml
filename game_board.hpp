@@ -1,5 +1,6 @@
 #pragma once
 #include "define.hpp"
+#include "boy.hpp"
 
 class Game_board
 {
@@ -21,13 +22,19 @@ private:
         vector<Sprite> stars;
 
         //boys
-        Texture t_boy_turtle;
-        Sprite boy_turtle;
-        vector<Sprite> boy_turtles;
+        Boy boy_turtle;
+        vector<Boy> boys;
+        void update_boy_move();
 
+        //collision
+        void update_collision();
+        void collision_boys_and_portal();
 
 public:
-        Game_board(/* args */);
+        Game_board();
+
+        void pre_update();
+        void update();
 
         //initialize
         void initialize_floor();
@@ -46,10 +53,14 @@ public:
         vector<FloatRect> get_floors_bound();
         vector<FloatRect> get_stars_bound();
         vector<FloatRect> get_diamonds_bound();
-        vector<FloatRect> get_boy_turtles_bound();
+        vector<FloatRect> get_boys_bound();
         vector<Sprite> get_board();
+        vector<Boy> &get_boys();
 
         // scores
         void remove_diamond(int pos);
         void remove_star(int pos);
+        void free_boy(int pos);
+        bool is_all_boy_in_portal();
+
 };

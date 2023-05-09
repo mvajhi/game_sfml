@@ -35,31 +35,28 @@ Boy::Boy(string texture_file_addr)
     initilaize_move();
 }
 
-void Boy::move_handel(int direct)
+void Boy::move_handel()
 {
-    switch (direct)
+    // TODO
+    if (is_go_left)
     {
-    case RIGHT:
-        move(Vector2f(1, 0));
-        anime_state = RIGHT;
-        break;
-    case LEFT:
         move(Vector2f(-1, 0));
         anime_state = LEFT;
-        break;
-    case UP:
-        move(Vector2f(0, -6));
-        anime_state = UP;
-        break;
-
-    default:
-        break;
     }
+    else
+    {
+        move(Vector2f(1, 0));
+        anime_state = RIGHT;
+    }
+
     have_move = true;
 }
 
 void Boy::update()
 {
+    if (is_free)
+        move_handel();
+
     update_animation();
 
     update_move();
@@ -75,21 +72,22 @@ void Boy::initilaize_sprite(string texture_file_addr)
 
 void Boy::initilaize_anime()
 {
-    IDL_frame = IntRect(0,0, IMG_BOY_SIZE_W, IMG_BOY_SIZE_H);
-    move_frame = IntRect(0,0, IMG_BOY_SIZE_W, IMG_BOY_SIZE_H);
+    is_free = false;
+    IDL_frame = IntRect(0, 0, IMG_BOY_SIZE_W, IMG_BOY_SIZE_H);
+    move_frame = IntRect(0, 0, IMG_BOY_SIZE_W, IMG_BOY_SIZE_H);
     animation_clock.restart();
     anime_state = IDL;
 }
 
 void Boy::initilaize_move()
 {
+    is_go_left = true;
     velocity = Vector2f(0, 0);
     velocity_max = DEFAULT_VELOCITY_MAX;
     velocity_min = DEFAULT_VELOCITY_MIN;
     acceleration = DEFAULT_ACCELERATION;
     drag = DEFAULT_DRAG;
     gravity = DEFAULT_GRAVITY;
-    cout <<IMG_BOY_SIZE_W <<endl;
 }
 
 void Boy::update_animation()
@@ -117,11 +115,11 @@ void Boy::update_left_animation()
             move_frame.top += IMG_BOY_SIZE_H;
         }
         if (move_frame.top == IMG_BOY_SIZE_H * 2 &&
-            move_frame.left >= IMG_BOY_SIZE_W * 4)
-            {
+            move_frame.left >= IMG_BOY_SIZE_W * 3)
+        {
+            move_frame.left = 0;
             move_frame.top = 0;
-            }
-        cout << move_frame.left << "  " << move_frame.top << endl;
+        }
 
         animation_clock.restart();
     }
@@ -138,22 +136,22 @@ void Boy::update_right_animation()
             move_frame.top += IMG_BOY_SIZE_H;
         }
         if (move_frame.top < IMG_BOY_SIZE_H * 3 ||
-            (move_frame.top == IMG_BOY_SIZE_H * 7 &&
+            (move_frame.top == IMG_BOY_SIZE_H * 5 &&
              move_frame.left == IMG_BOY_SIZE_W * 4))
+        {
+            move_frame.left = 0;
             move_frame.top = IMG_BOY_SIZE_H * 3;
-    
+        }
+
         animation_clock.restart();
     }
 }
 
 void Boy::update_IDL_animation()
 {
-    if (last_anime_state == LEFT)
-        move_frame = IntRect(0, PLAYER_IDL_LEFT,
-                             IMG_PLAYER_SIZE_W, IMG_PLAYER_SIZE_H);
-    else if (last_anime_state == RIGHT)
-        move_frame = IntRect(0, PLAYER_IDL_RIGHT,
-                             IMG_PLAYER_SIZE_W, IMG_PLAYER_SIZE_H);
+    if (!is_free)
+        move_frame = IntRect(IMG_BOY_SIZE_W * 4, IMG_BOY_SIZE_H * 2,
+                             IMG_BOY_SIZE_W, IMG_BOY_SIZE_H);
 }
 
 void Boy::update_anime_state()
@@ -198,6 +196,23 @@ Vector2f Boy::get_pre_position()
 Vector2f Boy::get_velocity()
 {
     return velocity;
+}
+
+void Boy::set_free()
+{
+    is_free = true;
+}
+
+void Boy::go_left()
+{
+        move_frame = IntRect(0, 0, IMG_BOY_SIZE_W, IMG_BOY_SIZE_H);
+    is_go_left = true;
+}
+
+void Boy::go_right()
+{
+        move_frame = IntRect(0, 0, IMG_BOY_SIZE_W, IMG_BOY_SIZE_H);
+    is_go_left = false;
 }
 
 FloatRect Boy::get_global_bound()

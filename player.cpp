@@ -203,6 +203,12 @@ void Player::set_spawn(float x, float y)
     spawn_point = Vector2f(x, y - 5);
 }
 
+void Player::reset()
+{
+    score = DEFAULT_SCORE;
+    health = DEFAULT_HELTH;
+}
+
 void Player::save_pre_position()
 {
     pre_position = sprite.getPosition();

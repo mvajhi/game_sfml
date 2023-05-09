@@ -9,6 +9,7 @@ private:
     Texture texture;
 
     bool is_free;
+    bool is_go_left;
     Vector2f spawn_point;
 
     // initilaize
@@ -52,7 +53,7 @@ public:
     Vector2f get_position();
 
     // move
-    void move_handel(int direct);
+    void move_handel();
 
     // collision
     FloatRect get_global_bound();
@@ -63,4 +64,8 @@ public:
     void save_pre_position();
     Vector2f get_pre_position();
     Vector2f get_velocity();
+
+    void set_free();
+    void go_left();
+    void go_right();
 };

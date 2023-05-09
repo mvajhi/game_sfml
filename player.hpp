@@ -49,6 +49,7 @@ public:
     Player(string texture_file_addr);
     void update();
     void set_spawn(float x, float y);
+    void reset();
 
     //outputs
     Sprite get_sprite();

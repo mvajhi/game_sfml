@@ -5,7 +5,7 @@ int main()
 {
     Game game;
 
-    game.read_level1();
+    game.read_level();
     while (game.get_window().isOpen())
     {
         game.pre_update();

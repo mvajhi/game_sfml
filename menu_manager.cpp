@@ -10,13 +10,9 @@ Menu_manager::Menu_manager(Game *the_game, RenderWindow &the_window)
     backgroundTexture.loadFromFile(BACKGROUND_IMG);
     available_page = START_MENU;
 
-    start_menu = new Menu(window, font, MENU_POS, backgroundTexture);
-    level_menu = new Menu(window, font, MENU_POS, backgroundTexture);
-    pause_menu = new Menu(window, font, MENU_POS, backgroundTexture);
-
-    initialize_level_menu();
-    initialize_start_menu();
-    initialize_pause_menu();
+    first = true;
+    reset = false;
+    create();
 }
 
 Menu_manager::~Menu_manager()
@@ -25,12 +21,15 @@ Menu_manager::~Menu_manager()
     delete (level_menu);
 }
 
-void Menu_manager::show_menu(int page = DEFAULT_PAGE)
+void Menu_manager::show_menu(int page = DEFAULT_PAGE, int score_)
 {
+    score = score_;
     available_page = page;
 
     window.setView(View(Vector2f(WINDOW_W / 2, WINDOW_H / 2),
                         Vector2f(WINDOW_W, WINDOW_H)));
+
+    create();
 
     while (window.isOpen())
     {
@@ -62,6 +61,9 @@ Menu *Menu_manager::find_avail_page()
     case PAUSE_MENU:
         return pause_menu;
         break;
+    case WIN_MENU:
+        return win_menu;
+        break;
 
     default:
         break;
@@ -78,6 +80,10 @@ void Menu_manager::handel_events(Menu *page)
         {
             window.close();
         }
+        else if (event.type == Event::MouseButtonPressed && page == win_menu)
+        {
+            available_page = LEVEL_MENU;
+        }
         else
         {
             page->handle_event(event);
@@ -88,15 +94,18 @@ void Menu_manager::handel_events(Menu *page)
 void Menu_manager::initialize_level_menu()
 {
 
-    Game *the_game = game;
+    string &path = level_path;
 
     int &avail_menu = available_page;
-    level_menu->add_button("level 1", [&the_game, &avail_menu]()
+    level_menu->add_button("level 1", [&path, &avail_menu]()
                            { cout << "level 1" << endl;
+                            path = MAP_L1;
                            avail_menu = SHOW_GAME; });
 
-    level_menu->add_button("level 2", []()
-                           { cout << "level 2" << endl; });
+    level_menu->add_button("level 2", [&path, &avail_menu]()
+                           { cout << "level 2" << endl;
+                            path = MAP_L2;
+                           avail_menu = SHOW_GAME; });
 
     level_menu->add_button("return", [&avail_menu]()
                            { avail_menu = START_MENU; });
@@ -116,9 +125,44 @@ void Menu_manager::initialize_start_menu()
 void Menu_manager::initialize_pause_menu()
 {
     int &avail_menu = available_page;
-    pause_menu->add_button("Continue", [&avail_menu]()
-                           { avail_menu = SHOW_GAME; });
+    bool &the_reset = reset;
+    pause_menu->add_button("Continue", [&the_reset, &avail_menu]()
+                           { cout << "Continue" << endl;
+                            the_reset = false;
+                            avail_menu = SHOW_GAME; });
     // TODO reset level
-    pause_menu->add_button("return", [&avail_menu]()
-                           { avail_menu = LEVEL_MENU; });
+    pause_menu->add_button("return", [&the_reset, &avail_menu]()
+                           { cout << "back" << endl;
+                           the_reset = true;
+                           avail_menu = LEVEL_MENU; });
+}
+
+void Menu_manager::initialize_win_menu()
+{
+    int &avail_menu = available_page;
+    win_menu->add_button("score: " + to_string(score), [&avail_menu]()
+                         { avail_menu = LEVEL_MENU; });
+}
+
+void Menu_manager::create()
+{
+    if (!first)
+    {
+        delete (start_menu);
+        delete (level_menu);
+        delete (pause_menu);
+        delete (win_menu);
+    }
+
+    start_menu = new Menu(window, font, MENU_POS, backgroundTexture);
+    level_menu = new Menu(window, font, MENU_POS, backgroundTexture);
+    pause_menu = new Menu(window, font, MENU_POS, backgroundTexture);
+    win_menu = new Menu(window, font, MENU_POS, backgroundTexture);
+
+    initialize_level_menu();
+    initialize_start_menu();
+    initialize_pause_menu();
+    initialize_win_menu();
+
+    first = false;
 }
